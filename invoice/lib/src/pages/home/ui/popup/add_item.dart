@@ -16,11 +16,7 @@ class AddItem extends StatelessWidget {
   final HomeController controller;
   final bool isEdit;
   final int index;
-  const AddItem(
-      {super.key,
-      required this.controller,
-      required this.isEdit,
-      required this.index});
+  const AddItem({super.key, required this.controller, required this.isEdit, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -68,26 +64,24 @@ class AddItem extends StatelessWidget {
                             splashColor: Colors.transparent,
                             hintColor: AppColors.white,
                             colorScheme: const ColorScheme.light(
-                                primary: AppColors.darkBlue),
+                              primary: AppColors.darkBlue,
+                            ),
                             buttonTheme: const ButtonThemeData(
-                                textTheme: ButtonTextTheme.primary),
+                              textTheme: ButtonTextTheme.primary,
+                            ),
                           ),
                           child: child!,
                         );
                       },
                     );
                     if (selected != null) {
-                      controller.itemDate.value =
-                          DateFormat('dd-MM-yyyy').format(selected);
+                      controller.itemDate.value = DateFormat('dd-MM-yyyy').format(selected);
                     }
                   },
                   child: Center(
-                    child: Obx(
-                      () => Text(
-                        controller.itemDate.isEmpty
-                            ? controller.itemTodayDate
-                            : controller.itemDate.value,
-                        style: globalStyle.text.btn1,
+                    child: Obx(() => Text(
+                      controller.itemDate.isEmpty ? controller.itemTodayDate : controller.itemDate.value,
+                      style: globalStyle.text.btn1,
                       ),
                     ),
                   ),
@@ -101,24 +95,40 @@ class AddItem extends StatelessWidget {
                 '${Strings.item} ${Strings.colon} ',
                 style: globalStyle.text.btn,
               ),
-              SizedBox(
-                height: 30.scale,
-                width: 160.scale,
-                child: TextFormField(
-                  controller: controller.item,
-                  textAlign: TextAlign.start,
-                  style: globalStyle.text.btn1,
-                  textCapitalization: TextCapitalization.sentences,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(10),
-                    FilteringTextInputFormatter.allow(
-                      RegExp('[a-zA-Z]'),
+              Obx(
+                () => SizedBox(
+                  height: 30.scale,
+                  width: 130.scale,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(10),
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: AppColors.black,
+                      ),
+                      hint: Padding(
+                        padding: EdgeInsets.only(left: 6.scale, top: 3.scale),
+                        child: Text(
+                          controller.selectedItem.value.isEmpty  ? controller.itemType[0] : controller.selectedItem.value,
+                          style: globalStyle.text.btn1.copyWith(
+                            color: AppColors.black,
+                          ),
+                        ),
+                      ),
+                      style: globalStyle.text.btn1.copyWith(
+                        color: AppColors.black,
+                      ),
+                      items: controller.itemType.map(
+                        (e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(e),
+                        ),
+                      ).toList(),
+                      onChanged: (val) {
+                        log(val!);
+                        controller.selectedItem.value = val;
+                      },
                     ),
-                  ],
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: Strings.enterItemName,
-                    contentPadding: EdgeInsets.symmetric(vertical: -11.scale),
                   ),
                 ),
               ),
@@ -169,7 +179,7 @@ class AddItem extends StatelessWidget {
                   ],
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: Strings.enterRate,
+                    hintText: Strings.enterRateInRuppees,
                     contentPadding: EdgeInsets.symmetric(vertical: -11.scale),
                   ),
                 ),
@@ -182,49 +192,43 @@ class AddItem extends StatelessWidget {
                 '${Strings.unit} ${Strings.colon} ',
                 style: globalStyle.text.btn,
               ),
-              Obx(
-                () => SizedBox(
-                  height: 30.scale,
-                  width: 130.scale,
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: AppColors.black,
-                      ),
-                      hint: Padding(
-                        padding: EdgeInsets.only(left: 10.scale),
-                        child: Text(
-                          controller.selectedUnit.value.isEmpty
-                              ? controller.unit[0]
-                              : controller.selectedUnit.value,
-                          style: globalStyle.text.btn1.copyWith(
-                            color: AppColors.black,
-                          ),
+              Obx(() => SizedBox(
+                height: 30.scale,
+                width: 130.scale,
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    borderRadius: BorderRadius.circular(10),
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: AppColors.black,
+                    ),
+                    hint: Padding(
+                      padding: EdgeInsets.only(left: 6.scale, top: 3.scale),
+                      child: Text(
+                        controller.selectedUnit.value.isEmpty ? controller.unit[0] : controller.selectedUnit.value,
+                        style: globalStyle.text.btn1.copyWith(
+                          color: AppColors.black,
                         ),
                       ),
-                      style: globalStyle.text.btn1.copyWith(
-                        color: AppColors.black,
-                      ),
-                      items: controller.unit
-                          .map(
-                            (e) => DropdownMenuItem(
-                              value: e,
-                              child: Text(e),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (val) {
-                        log(val!);
-                        controller.selectedUnit.value = val;
-                      },
                     ),
+                    style: globalStyle.text.btn1.copyWith(
+                      color: AppColors.black,
+                    ),
+                    items: controller.unit.map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e),
+                      ),
+                    ).toList(),
+                    onChanged: (val) {
+                      log(val!);
+                      controller.selectedUnit.value = val;
+                    },
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ]),
           height10,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,11 +252,11 @@ class AddItem extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     if (isEdit) {
-                      if (controller.item.text.isNotEmpty) {
+                      if (controller.selectedItem.isNotEmpty) {
                         controller.updateItem(
                           index: index,
                           date: controller.itemDate.value,
-                          item: controller.item.text,
+                          item: controller.selectedItem.value,
                           qty: int.tryParse(controller.qty.text) ?? 0,
                           rate: int.tryParse(controller.rate.text) ?? 0,
                           unit: controller.selectedUnit.value,
@@ -266,10 +270,10 @@ class AddItem extends StatelessWidget {
                         );
                       }
                     } else {
-                      if (controller.item.text.isNotEmpty) {
+                      if (controller.selectedItem.isNotEmpty) {
                         controller.addItem(
                           date: controller.itemDate.value,
-                          item: controller.item.text,
+                          item: controller.selectedItem.value,
                           qty: int.tryParse(controller.qty.text) ?? 0,
                           rate: int.tryParse(controller.rate.text) ?? 0,
                           unit: controller.selectedUnit.value,
@@ -312,6 +316,7 @@ class AddItem extends StatelessWidget {
                   onPressed: () {
                     controller.clearText();
                     controller.selectedUnit.value = '';
+                    controller.selectedItem.value = '';
                     Navigator.of(context).pop();
                   },
                   child: Text(

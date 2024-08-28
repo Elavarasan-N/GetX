@@ -123,11 +123,13 @@ class HomePage extends StatelessWidget {
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(30),
                               FilteringTextInputFormatter.allow(
-                                  RegExp('[a-zA-Z.]'))
+                                RegExp('[a-zA-Z.]'),
+                              ),
                             ],
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: Strings.enterCompanyName,
+                              contentPadding: EdgeInsets.symmetric(vertical: 12.scale),
                             ),
                           ),
                         ),
@@ -148,9 +150,10 @@ class HomePage extends StatelessWidget {
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(30),
                             ],
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: Strings.enterAddress,
+                              contentPadding: EdgeInsets.symmetric(vertical: 12.scale),
                             ),
                           ),
                         ),
@@ -171,9 +174,10 @@ class HomePage extends StatelessWidget {
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(10),
                             ],
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: Strings.enterPincode,
+                              contentPadding: EdgeInsets.symmetric(vertical: 12.scale),
                             ),
                           ),
                         ),
@@ -245,9 +249,10 @@ class HomePage extends StatelessWidget {
                                 RegExp('[a-zA-Z]'),
                               ),
                             ],
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: Strings.enterBankName,
+                              contentPadding: EdgeInsets.symmetric(vertical: 12.scale),
                             ),
                           ),
                         ),
@@ -271,9 +276,10 @@ class HomePage extends StatelessWidget {
                                 RegExp('[a-zA-Z]'),
                               ),
                             ],
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: Strings.enterName,
+                              contentPadding: EdgeInsets.symmetric(vertical: 12.scale),
                             ),
                           ),
                         ),
@@ -295,9 +301,10 @@ class HomePage extends StatelessWidget {
                               LengthLimitingTextInputFormatter(15),
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: Strings.enterAccountNumber,
+                              contentPadding: EdgeInsets.symmetric(vertical: 12.scale),
                             ),
                           ),
                         ),
@@ -308,33 +315,32 @@ class HomePage extends StatelessWidget {
               ],
             ),
             height12,
-            Obx(
-              () => SizedBox(
-                height: 300.scale,
-                child: SingleChildScrollView(
-                  child: Table(
-                    border: TableBorder.all(
-                      color: AppColors.black,
-                      width: 1.scale,
-                    ),
-                    children: [
-                      header(),
-                      for (int i = 0; i < controller.cartItem.length; i++)
-                        cartItem(
-                          sno: i + 1,
-                          date: controller.cartItem[i].date ?? '',
-                          item: controller.cartItem[i].item ?? '',
-                          qty: '${controller.cartItem[i].qty}',
-                          rate: controller.cartItem[i].unit!.isEmpty
-                              ? '${controller.cartItem[i].unitPrice}'
-                              : '${controller.cartItem[i].unitPrice}/${controller.cartItem[i].unit}',
-                          amount:
-                              '${controller.cartItem[i].qty! * controller.cartItem[i].unitPrice!}',
-                        ),
-                    ],
+            Obx(() => SizedBox(
+              height: 220.scale,
+              child: SingleChildScrollView(
+                child: Table(
+                  border: TableBorder.all(
+                    color: AppColors.black,
+                    width: 1.scale,
                   ),
+                  children: [
+                    header(),
+                    for (int i = 0; i < controller.cartItem.length; i++)
+                      cartItem(
+                        sno: i + 1,
+                        date: controller.cartItem[i].date ?? '',
+                        item: controller.cartItem[i].item ?? '',
+                        qty: '${controller.cartItem[i].qty}',
+                        rate: controller.cartItem[i].unit!.isEmpty
+                            ? '${controller.cartItem[i].unitPrice}'
+                            : '${controller.cartItem[i].unitPrice}/${controller.cartItem[i].unit}',
+                        amount:
+                            '${controller.cartItem[i].qty! * controller.cartItem[i].unitPrice!}',
+                      ),
+                  ],
                 ),
               ),
+            ),
             ),
             height40,
             Row(
@@ -370,7 +376,7 @@ class HomePage extends StatelessWidget {
             height30,
             ElevatedButton(
               style: const ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(AppColors.green),
+                backgroundColor: WidgetStatePropertyAll(AppColors.green),
               ),
               onPressed: () {
                 controller.save(context: context);
@@ -398,6 +404,7 @@ class HomePage extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(5.scale, 10.scale, 5.scale, 10.scale),
           child: Text(
             Strings.sno,
+            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: globalStyle.text.btn.copyWith(
               color: AppColors.white,

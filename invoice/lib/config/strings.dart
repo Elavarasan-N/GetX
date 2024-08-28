@@ -18,8 +18,8 @@ class Strings {
   static const String enterName = 'Enter Name';
   static const String enterAccountNumber = 'Enter Account Number';
   static const String enterItemName = 'Enter Item Name';
-  static const String enterQty = 'Enter Quantity';
-  static const String enterRate = 'Enter Rate';
+  static const String enterQty = 'Enter quantity';
+  static const String enterRateInRuppees = 'Enter rate in ruppees';
   static const String add = 'Add';
   static const String update = 'Update';
   static const String close = 'Close';
@@ -33,8 +33,10 @@ class Strings {
   static const String item = 'Item';
   static const String qty = 'Qty';
   static const String rate = 'Rate';
+  static const String rs = 'Rs.';
   static const String unit = 'Unit';
   static const String selectUnit = 'Select Unit';
+  static const String selectItem = 'Select Item';
   static const String amount = 'Amount';
   static const String actions = 'Actions';
   static const String total = 'Total';

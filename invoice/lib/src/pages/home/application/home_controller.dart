@@ -17,16 +17,12 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class HomeController extends GetxController {
-  TextEditingController cname =
-      TextEditingController(text: Strings.alchemyTechsolIndiaPvtLtd);
+  TextEditingController cname = TextEditingController(text: Strings.alchemyTechsolIndiaPvtLtd);
   TextEditingController address = TextEditingController(text: Strings.woraiyur);
   TextEditingController pincode = TextEditingController(text: Strings.trichy);
-  TextEditingController bank =
-      TextEditingController(text: Strings.indianOverseasBank);
+  TextEditingController bank = TextEditingController(text: Strings.indianOverseasBank);
   TextEditingController name = TextEditingController(text: Strings.swethas);
-  TextEditingController account =
-      TextEditingController(text: Strings.accountNo);
-  TextEditingController item = TextEditingController();
+  TextEditingController account = TextEditingController(text: Strings.accountNo);
   TextEditingController qty = TextEditingController();
   TextEditingController rate = TextEditingController();
   RxString selectedDate = ''.obs;
@@ -34,7 +30,9 @@ class HomeController extends GetxController {
   RxString itemDate = ''.obs;
   String itemTodayDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
   RxString selectedUnit = ''.obs;
+  RxString selectedItem = ''.obs;
   List<String> unit = [Strings.selectUnit, 'Kg', 'Piece', 'Cup'];
+  List<String> itemType = [Strings.selectItem, 'Tea', 'Coffee', 'Snacks','Sweets'];
   var cartItem = <CartItem>[].obs;
   RxInt grandTotal = 0.obs;
 
@@ -61,9 +59,10 @@ class HomeController extends GetxController {
 
   editItem({required int index}) {
     log(cartItem[index].item!);
-    item.text = cartItem[index].item ?? '';
+    selectedItem.value = cartItem[index].item ?? '';
     rate.text = cartItem[index].unitPrice.toString();
     qty.text = cartItem[index].qty.toString();
+    selectedUnit.value = cartItem[index].unit ?? '';
     itemDate.value = cartItem[index].date ?? '';
     update();
     Get.dialog(
@@ -108,10 +107,11 @@ class HomeController extends GetxController {
   }
 
   clearText() {
-    item.clear();
     qty.clear();
     rate.clear();
     itemDate.value = itemTodayDate;
+    selectedItem.value = '';
+    selectedUnit.value = '';
     update();
   }
 
@@ -176,7 +176,7 @@ class HomeController extends GetxController {
                       ),
                     ],
                   ),
-                  pw.SizedBox(height: 60.scale),
+                  pw.SizedBox(height: 30.scale),
                   pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.start,
                     children: [
@@ -191,7 +191,7 @@ class HomeController extends GetxController {
                       ),
                     ],
                   ),
-                  pw.SizedBox(height: 40.scale),
+                  pw.SizedBox(height: 20.scale),
                   pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
@@ -281,19 +281,17 @@ class HomeController extends GetxController {
                       rowHeader(),
                       for (int i = 0; i < cartItem.length; i++)
                         rowItems(
-                          sno: 0,
+                          sno: i + 1,
                           date: cartItem[i].date ?? '',
                           item: cartItem[i].item ?? '',
                           qty: '${cartItem[i].qty}',
-                          rate: cartItem[i].unit!.isEmpty
-                              ? '${cartItem[i].unitPrice}'
+                          rate: cartItem[i].unit!.isEmpty ? '${cartItem[i].unitPrice}'
                               : '${cartItem[i].unitPrice}/${cartItem[i].unit}',
-                          amount:
-                              '${cartItem[i].qty! * cartItem[i].unitPrice!}',
+                          amount: '${cartItem[i].qty! * cartItem[i].unitPrice!}',
                         ),
                     ],
                   ),
-                  pw.Row(
+                 pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.end,
                     children: [
                       pw.Container(
