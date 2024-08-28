@@ -1,0 +1,47 @@
+class Strings {
+  static const String skfoods = 'SK Foods';
+  static const String date = 'Date';
+  static const String companyName = 'Company Name';
+  static const String address = 'Address';
+  static const String pincode = 'Pincode';
+  static const String alchemyTechsolIndiaPvtLtd =
+      'Alchemy Techsol India Pvt. Ltd.';
+  static const String woraiyur = 'Woraiyur';
+  static const String indianOverseasBank = 'Indian Overseas Bank';
+  static const String swethas = 'Swetha S';
+  static const String accountNo = '192001000010468';
+  static const String trichy = 'Trichy';
+  static const String enterCompanyName = 'Enter Company Name';
+  static const String enterAddress = 'Enter Address';
+  static const String enterPincode = 'Enter Pincode';
+  static const String enterBankName = 'Enter Bank Name';
+  static const String enterName = 'Enter Name';
+  static const String enterAccountNumber = 'Enter Account Number';
+  static const String enterItemName = 'Enter Item Name';
+  static const String enterQty = 'Enter Quantity';
+  static const String enterRate = 'Enter Rate';
+  static const String add = 'Add';
+  static const String update = 'Update';
+  static const String close = 'Close';
+  static const String billTo = 'Bill To';
+  static const String paymentInformation = 'Payment Information';
+  static const String bank = 'Bank';
+  static const String name = 'Name';
+  static const String account = 'Account';
+  static const String addItem = 'Add Item';
+  static const String sno = 'S.NO';
+  static const String item = 'Item';
+  static const String qty = 'Qty';
+  static const String rate = 'Rate';
+  static const String unit = 'Unit';
+  static const String selectUnit = 'Select Unit';
+  static const String amount = 'Amount';
+  static const String actions = 'Actions';
+  static const String total = 'Total';
+  static const String colon = ':';
+  static const String saveAsPdf = 'Save as PDF';
+  static const String success = 'Success';
+  static const String pdfSavedAt = 'PDF saved at';
+  static const String failure = 'Failure';
+  static const String pdfSavingDenied = 'PDF Saving Operation Denied';
+}
