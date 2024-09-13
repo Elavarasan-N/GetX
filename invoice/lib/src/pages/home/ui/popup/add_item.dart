@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -125,8 +122,7 @@ class AddItem extends StatelessWidget {
                         ),
                       ).toList(),
                       onChanged: (val) {
-                        log(val!);
-                        controller.selectedItem.value = val;
+                        controller.selectedItem.value = val!;
                       },
                     ),
                   ),
@@ -221,8 +217,7 @@ class AddItem extends StatelessWidget {
                       ),
                     ).toList(),
                     onChanged: (val) {
-                      log(val!);
-                      controller.selectedUnit.value = val;
+                      controller.selectedUnit.value = val!;
                     },
                   ),
                 ),
@@ -233,104 +228,72 @@ class AddItem extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColors.darkBlue,
-                  boxShadow: const [
-                    BoxShadow(
-                      blurRadius: 1.1,
-                      color: Colors.black45,
-                      spreadRadius: 0.5,
-                      offset: Offset(
-                        1.5,
-                        2,
-                      ),
-                    ),
-                  ],
-                ),
-                child: TextButton(
-                  onPressed: () {
+              buildActionButton(
+                label: isEdit ? Strings.update : Strings.add, 
+                color: AppColors.darkBlue, 
+                onPressed: () {
+                  if (validateInputs()) {
                     if (isEdit) {
-                      if (controller.selectedItem.isNotEmpty) {
-                        controller.updateItem(
-                          index: index,
-                          date: controller.itemDate.value,
-                          item: controller.selectedItem.value,
-                          qty: int.tryParse(controller.qty.text) ?? 0,
-                          rate: int.tryParse(controller.rate.text) ?? 0,
-                          unit: controller.selectedUnit.value,
-                        );
-                        Navigator.of(context).pop();
-                      } else {
-                        showSnackBar(
-                          title: 'Warning',
-                          message: 'Cart Item cannot be Empty',
-                          contentType: ContentType.warning,
-                        );
-                      }
+                      controller.updateItem(
+                        index: index,
+                        date: controller.itemDate.value,
+                        item: controller.selectedItem.value,
+                        qty: int.tryParse(controller.qty.text) ?? 0,
+                        rate: int.tryParse(controller.rate.text) ?? 0,
+                        unit: controller.selectedUnit.value,
+                      );
                     } else {
-                      if (controller.selectedItem.isNotEmpty) {
-                        controller.addItem(
-                          date: controller.itemDate.value,
-                          item: controller.selectedItem.value,
-                          qty: int.tryParse(controller.qty.text) ?? 0,
-                          rate: int.tryParse(controller.rate.text) ?? 0,
-                          unit: controller.selectedUnit.value,
-                        );
-                        Navigator.of(context).pop();
-                      } else {
-                        showSnackBar(
-                          title: 'Warning',
-                          message: 'Cart Item cannot be Empty',
-                          contentType: ContentType.warning,
-                        );
-                      }
+                      controller.addItem(
+                        date: controller.itemDate.value,
+                        item: controller.selectedItem.value,
+                        qty: int.tryParse(controller.qty.text) ?? 0,
+                        rate: int.tryParse(controller.rate.text) ?? 0,
+                        unit: controller.selectedUnit.value,
+                      );
                     }
-                  },
-                  child: Text(
-                    isEdit ? Strings.update : Strings.add,
-                    style: globalStyle.text.btn.copyWith(
-                      color: AppColors.white,
-                    ),
-                  ),
-                ),
+                    Get.back();
+                  }
+                },
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColors.red,
-                  boxShadow: const [
-                    BoxShadow(
-                      blurRadius: 1.1,
-                      color: Colors.black45,
-                      spreadRadius: 0.5,
-                      offset: Offset(
-                        1.5,
-                        2,
-                      ),
-                    ),
-                  ],
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    controller.clearText();
-                    controller.selectedUnit.value = '';
-                    controller.selectedItem.value = '';
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    Strings.close,
-                    style: globalStyle.text.btn.copyWith(
-                      color: AppColors.white,
-                    ),
-                  ),
-                ),
+              buildActionButton(
+                label: Strings.close, 
+                color: AppColors.red, 
+                onPressed: () {
+                  controller.clearText();
+                  controller.selectedUnit.value = '';
+                  controller.selectedItem.value = '';
+                  Get.back();
+                },
               ),
             ],
           ),
         ],
       ),
     );
+  }
+
+  bool validateInputs() {
+    if (controller.selectedItem.isEmpty) {
+      getXSnackBar(
+        title: Strings.warning, 
+        message: Strings.itemCannotBeEmpty,
+      );
+      return false;
+    }
+    if (controller.qty.text.isEmpty || int.tryParse(controller.qty.text) == 0) {
+      getXSnackBar(
+        title: Strings.warning, 
+        message: Strings.quantityMustBeGreaterThanZero,
+      );
+      return false;
+    }
+    if (controller.rate.text.isEmpty || int.tryParse(controller.rate.text) == 0) {
+      getXSnackBar(
+        title: Strings.warning, 
+        message: Strings.rateMustBeGreaterThanZero,
+      );
+      return false;
+    }
+    return true;
   }
 }

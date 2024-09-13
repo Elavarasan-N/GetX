@@ -4,8 +4,7 @@ class Strings {
   static const String companyName = 'Company Name';
   static const String address = 'Address';
   static const String pincode = 'Pincode';
-  static const String alchemyTechsolIndiaPvtLtd =
-      'Alchemy Techsol India Pvt. Ltd.';
+  static const String alchemyTechsolIndiaPvtLtd = 'Alchemy Techsol India Pvt. Ltd.';
   static const String woraiyur = 'Woraiyur';
   static const String indianOverseasBank = 'Indian Overseas Bank';
   static const String swethas = 'Swetha S';
@@ -46,4 +45,8 @@ class Strings {
   static const String pdfSavedAt = 'PDF saved at';
   static const String failure = 'Failure';
   static const String pdfSavingDenied = 'PDF Saving Operation Denied';
+  static const String warning = 'Warning';
+  static const String itemCannotBeEmpty = 'Item cannot be empty';
+  static const String quantityMustBeGreaterThanZero = 'Quantity must be greater than zero';
+  static const String rateMustBeGreaterThanZero = 'Rate must be greater than zero';
 }

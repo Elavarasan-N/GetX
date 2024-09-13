@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 30.scale,
-                  width: 120.scale,
+                  width: 140.scale,
                   child: InkWell(
                     onTap: () async {
                       final DateTime? selected = await showDatePicker(
@@ -315,33 +315,44 @@ class HomePage extends StatelessWidget {
               ],
             ),
             height12,
-            Obx(() => SizedBox(
-              height: 220.scale,
-              child: SingleChildScrollView(
-                child: Table(
+            Obx(() => Column(
+              children: [
+                Table(
                   border: TableBorder.all(
                     color: AppColors.black,
                     width: 1.scale,
                   ),
                   children: [
                     header(),
-                    for (int i = 0; i < controller.cartItem.length; i++)
-                      cartItem(
-                        sno: i + 1,
-                        date: controller.cartItem[i].date ?? '',
-                        item: controller.cartItem[i].item ?? '',
-                        qty: '${controller.cartItem[i].qty}',
-                        rate: controller.cartItem[i].unit!.isEmpty
-                            ? '${controller.cartItem[i].unitPrice}'
-                            : '${controller.cartItem[i].unitPrice}/${controller.cartItem[i].unit}',
-                        amount:
-                            '${controller.cartItem[i].qty! * controller.cartItem[i].unitPrice!}',
-                      ),
                   ],
                 ),
-              ),
-            ),
-            ),
+                SizedBox(
+                  height: 200.scale,
+                  child: SingleChildScrollView(
+                    controller: controller.scrollController,
+                    child: Table(
+                      border: TableBorder.all(
+                        color: AppColors.black,
+                        width: 1.scale,
+                      ),
+                      children: [
+                        for (int i = 0; i < controller.cartItem.length; i++) 
+                          cartItem(
+                            sno: i + 1,
+                            date: controller.cartItem[i].date ?? '',
+                            item: controller.cartItem[i].item ?? '',
+                            qty: '${controller.cartItem[i].qty}',
+                            rate: controller.cartItem[i].unit!.isEmpty
+                                ? '${controller.cartItem[i].unitPrice}'
+                                : '${controller.cartItem[i].unitPrice}/${controller.cartItem[i].unit}',
+                            amount: '${controller.cartItem[i].qty! * controller.cartItem[i].unitPrice!}',
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ]
+            )),
             height40,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

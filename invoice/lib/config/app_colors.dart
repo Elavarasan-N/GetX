@@ -7,6 +7,7 @@ class AppColors {
   static const Color black = Colors.black;
   static const Color transparent = Colors.transparent;
   static const Color red = Colors.red;
+  static const Color darkRed = Color(0xFFB71C1C);
   static const Color green = Colors.green;
   static PdfColor darkBluePDF = PdfColor.fromHex('#00008B');
 }

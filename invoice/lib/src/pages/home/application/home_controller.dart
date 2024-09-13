@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
@@ -17,6 +16,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class HomeController extends GetxController {
+
   TextEditingController cname = TextEditingController(text: Strings.alchemyTechsolIndiaPvtLtd);
   TextEditingController address = TextEditingController(text: Strings.woraiyur);
   TextEditingController pincode = TextEditingController(text: Strings.trichy);
@@ -25,6 +25,8 @@ class HomeController extends GetxController {
   TextEditingController account = TextEditingController(text: Strings.accountNo);
   TextEditingController qty = TextEditingController();
   TextEditingController rate = TextEditingController();
+  ScrollController scrollController = ScrollController();
+
   RxString selectedDate = ''.obs;
   String todayDate = DateFormat('MMMM dd, yyyy').format(DateTime.now());
   RxString itemDate = ''.obs;
@@ -51,6 +53,7 @@ class HomeController extends GetxController {
     cart.totalPrice = qty * rate;
     cart.unit = unit;
     cartItem.add(cart);
+    scrollToBottom();
     calculateTotal();
     selectedUnit.value = '';
     clearText();
@@ -58,7 +61,6 @@ class HomeController extends GetxController {
   }
 
   editItem({required int index}) {
-    log(cartItem[index].item!);
     selectedItem.value = cartItem[index].item ?? '';
     rate.text = cartItem[index].unitPrice.toString();
     qty.text = cartItem[index].qty.toString();
@@ -66,7 +68,11 @@ class HomeController extends GetxController {
     itemDate.value = cartItem[index].date ?? '';
     update();
     Get.dialog(
-      AddItem(controller: this, isEdit: true, index: index),
+      AddItem(
+        controller: this, 
+        isEdit: true,
+        index: index,
+      ),
       barrierDismissible: false,
     );
   }
@@ -115,12 +121,19 @@ class HomeController extends GetxController {
     update();
   }
 
+  void scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.hasClients) {
+        scrollController.jumpTo(scrollController.position.maxScrollExtent);
+      }
+    });
+  }
+
   save({required BuildContext context}) {
     saveAsPdf(
       context: context,
       date: selectedDate.value.isEmpty ? todayDate : selectedDate.value,
-      cname:
-          cname.text.isEmpty ? Strings.alchemyTechsolIndiaPvtLtd : cname.text,
+      cname: cname.text.isEmpty ? Strings.alchemyTechsolIndiaPvtLtd : cname.text,
       caddr1: address.text.isEmpty ? Strings.woraiyur : address.text,
       caddr2: pincode.text.isEmpty ? Strings.trichy : pincode.text,
       bank: bank.text.isEmpty ? Strings.indianOverseasBank : bank.text,
@@ -143,10 +156,13 @@ class HomeController extends GetxController {
   }) async {
     final pdf = pw.Document();
     final companyLogo = await loadImage(AssetContants.companyLogo);
+    const int itemPerPage = 18;
 
-    pdf.addPage(
+    for (int pageIndex = 0; pageIndex < (cartItem.length / itemPerPage).ceil(); pageIndex++) {
+      pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
+          final List<CartItem> currentPageItems = cartItem.skip(pageIndex * itemPerPage).take(itemPerPage).toList();
           return pw.Container(
             decoration: pw.BoxDecoration(
               border: pw.Border.all(
@@ -279,18 +295,20 @@ class HomeController extends GetxController {
                     ),
                     children: [
                       rowHeader(),
-                      for (int i = 0; i < cartItem.length; i++)
+                      for (int i = 0; i < currentPageItems.length; i++)
                         rowItems(
-                          sno: i + 1,
+                          sno: pageIndex + itemPerPage + i + 1,
                           date: cartItem[i].date ?? '',
                           item: cartItem[i].item ?? '',
                           qty: '${cartItem[i].qty}',
-                          rate: cartItem[i].unit!.isEmpty ? '${cartItem[i].unitPrice}'
-                              : '${cartItem[i].unitPrice}/${cartItem[i].unit}',
+                          rate: cartItem[i].unit!.isEmpty 
+                                ? '${cartItem[i].unitPrice}'
+                                : '${cartItem[i].unitPrice}/${cartItem[i].unit}',
                           amount: '${cartItem[i].qty! * cartItem[i].unitPrice!}',
                         ),
                     ],
                   ),
+                if (pageIndex == (cartItem.length / itemPerPage).ceil() - 1)
                  pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.end,
                     children: [
@@ -320,6 +338,7 @@ class HomeController extends GetxController {
         },
       ),
     );
+    }
 
     final filePath = await FilePicker.platform.saveFile(
       type: FileType.custom,
