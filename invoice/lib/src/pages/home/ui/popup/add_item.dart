@@ -13,7 +13,11 @@ class AddItem extends StatelessWidget {
   final HomeController controller;
   final bool isEdit;
   final int index;
-  const AddItem({super.key, required this.controller, required this.isEdit, required this.index});
+  const AddItem(
+      {super.key,
+      required this.controller,
+      required this.isEdit,
+      required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +76,17 @@ class AddItem extends StatelessWidget {
                       },
                     );
                     if (selected != null) {
-                      controller.itemDate.value = DateFormat('dd-MM-yyyy').format(selected);
+                      controller.itemDate.value =
+                          DateFormat('dd-MM-yyyy').format(selected);
                     }
                   },
                   child: Center(
-                    child: Obx(() => Text(
-                      controller.itemDate.isEmpty ? controller.itemTodayDate : controller.itemDate.value,
-                      style: globalStyle.text.btn1,
+                    child: Obx(
+                      () => Text(
+                        controller.itemDate.isEmpty
+                            ? controller.itemTodayDate
+                            : controller.itemDate.value,
+                        style: globalStyle.text.btn1,
                       ),
                     ),
                   ),
@@ -92,39 +100,23 @@ class AddItem extends StatelessWidget {
                 '${Strings.item} ${Strings.colon} ',
                 style: globalStyle.text.btn,
               ),
-              Obx(
-                () => SizedBox(
-                  height: 30.scale,
-                  width: 130.scale,
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      borderRadius: BorderRadius.circular(10),
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: AppColors.black,
-                      ),
-                      hint: Padding(
-                        padding: EdgeInsets.only(left: 6.scale, top: 3.scale),
-                        child: Text(
-                          controller.selectedItem.value.isEmpty  ? controller.itemType[0] : controller.selectedItem.value,
-                          style: globalStyle.text.btn1.copyWith(
-                            color: AppColors.black,
-                          ),
-                        ),
-                      ),
-                      style: globalStyle.text.btn1.copyWith(
-                        color: AppColors.black,
-                      ),
-                      items: controller.itemType.map(
-                        (e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e),
-                        ),
-                      ).toList(),
-                      onChanged: (val) {
-                        controller.selectedItem.value = val!;
-                      },
+              SizedBox(
+                height: 30.scale,
+                width: 130.scale,
+                child: TextFormField(
+                  controller: controller.item,
+                  textAlign: TextAlign.start,
+                  style: globalStyle.text.btn1,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(30),
+                    FilteringTextInputFormatter.allow(
+                      RegExp('[a-zA-Z]'),
                     ),
+                  ],
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: Strings.enterItemName,
+                    contentPadding: EdgeInsets.symmetric(vertical: -11.scale),
                   ),
                 ),
               ),
@@ -182,13 +174,13 @@ class AddItem extends StatelessWidget {
               ),
             ],
           ),
-          Row(
-            children: [
-              Text(
-                '${Strings.unit} ${Strings.colon} ',
-                style: globalStyle.text.btn,
-              ),
-              Obx(() => SizedBox(
+          Row(children: [
+            Text(
+              '${Strings.unit} ${Strings.colon} ',
+              style: globalStyle.text.btn,
+            ),
+            Obx(
+              () => SizedBox(
                 height: 30.scale,
                 width: 130.scale,
                 child: DropdownButtonHideUnderline(
@@ -201,7 +193,9 @@ class AddItem extends StatelessWidget {
                     hint: Padding(
                       padding: EdgeInsets.only(left: 6.scale, top: 3.scale),
                       child: Text(
-                        controller.selectedUnit.value.isEmpty ? controller.unit[0] : controller.selectedUnit.value,
+                        controller.selectedUnit.value.isEmpty
+                            ? controller.unit[0]
+                            : controller.selectedUnit.value,
                         style: globalStyle.text.btn1.copyWith(
                           color: AppColors.black,
                         ),
@@ -210,12 +204,14 @@ class AddItem extends StatelessWidget {
                     style: globalStyle.text.btn1.copyWith(
                       color: AppColors.black,
                     ),
-                    items: controller.unit.map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(e),
-                      ),
-                    ).toList(),
+                    items: controller.unit
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e),
+                          ),
+                        )
+                        .toList(),
                     onChanged: (val) {
                       controller.selectedUnit.value = val!;
                     },
@@ -229,15 +225,15 @@ class AddItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildActionButton(
-                label: isEdit ? Strings.update : Strings.add, 
-                color: AppColors.darkBlue, 
+                label: isEdit ? Strings.update : Strings.add,
+                color: AppColors.darkBlue,
                 onPressed: () {
                   if (validateInputs()) {
                     if (isEdit) {
                       controller.updateItem(
                         index: index,
                         date: controller.itemDate.value,
-                        item: controller.selectedItem.value,
+                        item: controller.item.text,
                         qty: int.tryParse(controller.qty.text) ?? 0,
                         rate: int.tryParse(controller.rate.text) ?? 0,
                         unit: controller.selectedUnit.value,
@@ -245,7 +241,7 @@ class AddItem extends StatelessWidget {
                     } else {
                       controller.addItem(
                         date: controller.itemDate.value,
-                        item: controller.selectedItem.value,
+                        item: controller.item.text,
                         qty: int.tryParse(controller.qty.text) ?? 0,
                         rate: int.tryParse(controller.rate.text) ?? 0,
                         unit: controller.selectedUnit.value,
@@ -256,12 +252,11 @@ class AddItem extends StatelessWidget {
                 },
               ),
               buildActionButton(
-                label: Strings.close, 
-                color: AppColors.red, 
+                label: Strings.close,
+                color: AppColors.red,
                 onPressed: () {
                   controller.clearText();
                   controller.selectedUnit.value = '';
-                  controller.selectedItem.value = '';
                   Get.back();
                 },
               ),
@@ -273,23 +268,24 @@ class AddItem extends StatelessWidget {
   }
 
   bool validateInputs() {
-    if (controller.selectedItem.isEmpty) {
+    if (controller.item.text.isEmpty) {
       getXSnackBar(
-        title: Strings.warning, 
+        title: Strings.warning,
         message: Strings.itemCannotBeEmpty,
       );
       return false;
     }
     if (controller.qty.text.isEmpty || int.tryParse(controller.qty.text) == 0) {
       getXSnackBar(
-        title: Strings.warning, 
+        title: Strings.warning,
         message: Strings.quantityMustBeGreaterThanZero,
       );
       return false;
     }
-    if (controller.rate.text.isEmpty || int.tryParse(controller.rate.text) == 0) {
+    if (controller.rate.text.isEmpty ||
+        int.tryParse(controller.rate.text) == 0) {
       getXSnackBar(
-        title: Strings.warning, 
+        title: Strings.warning,
         message: Strings.rateMustBeGreaterThanZero,
       );
       return false;

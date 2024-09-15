@@ -16,13 +16,16 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class HomeController extends GetxController {
-
-  TextEditingController cname = TextEditingController(text: Strings.alchemyTechsolIndiaPvtLtd);
+  TextEditingController cname =
+      TextEditingController(text: Strings.alchemyTechsolIndiaPvtLtd);
   TextEditingController address = TextEditingController(text: Strings.woraiyur);
   TextEditingController pincode = TextEditingController(text: Strings.trichy);
-  TextEditingController bank = TextEditingController(text: Strings.indianOverseasBank);
+  TextEditingController bank =
+      TextEditingController(text: Strings.indianOverseasBank);
   TextEditingController name = TextEditingController(text: Strings.swethas);
-  TextEditingController account = TextEditingController(text: Strings.accountNo);
+  TextEditingController account =
+      TextEditingController(text: Strings.accountNo);
+  TextEditingController item = TextEditingController();
   TextEditingController qty = TextEditingController();
   TextEditingController rate = TextEditingController();
   ScrollController scrollController = ScrollController();
@@ -32,9 +35,7 @@ class HomeController extends GetxController {
   RxString itemDate = ''.obs;
   String itemTodayDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
   RxString selectedUnit = ''.obs;
-  RxString selectedItem = ''.obs;
   List<String> unit = [Strings.selectUnit, 'Kg', 'Piece', 'Cup'];
-  List<String> itemType = [Strings.selectItem, 'Tea', 'Coffee', 'Snacks','Sweets'];
   var cartItem = <CartItem>[].obs;
   RxInt grandTotal = 0.obs;
 
@@ -61,7 +62,7 @@ class HomeController extends GetxController {
   }
 
   editItem({required int index}) {
-    selectedItem.value = cartItem[index].item ?? '';
+    item.text = cartItem[index].item ?? '';
     rate.text = cartItem[index].unitPrice.toString();
     qty.text = cartItem[index].qty.toString();
     selectedUnit.value = cartItem[index].unit ?? '';
@@ -69,7 +70,7 @@ class HomeController extends GetxController {
     update();
     Get.dialog(
       AddItem(
-        controller: this, 
+        controller: this,
         isEdit: true,
         index: index,
       ),
@@ -116,7 +117,7 @@ class HomeController extends GetxController {
     qty.clear();
     rate.clear();
     itemDate.value = itemTodayDate;
-    selectedItem.value = '';
+    item.text = '';
     selectedUnit.value = '';
     update();
   }
@@ -133,7 +134,8 @@ class HomeController extends GetxController {
     saveAsPdf(
       context: context,
       date: selectedDate.value.isEmpty ? todayDate : selectedDate.value,
-      cname: cname.text.isEmpty ? Strings.alchemyTechsolIndiaPvtLtd : cname.text,
+      cname:
+          cname.text.isEmpty ? Strings.alchemyTechsolIndiaPvtLtd : cname.text,
       caddr1: address.text.isEmpty ? Strings.woraiyur : address.text,
       caddr2: pincode.text.isEmpty ? Strings.trichy : pincode.text,
       bank: bank.text.isEmpty ? Strings.indianOverseasBank : bank.text,
@@ -158,186 +160,192 @@ class HomeController extends GetxController {
     final companyLogo = await loadImage(AssetContants.companyLogo);
     const int itemPerPage = 18;
 
-    for (int pageIndex = 0; pageIndex < (cartItem.length / itemPerPage).ceil(); pageIndex++) {
+    for (int pageIndex = 0;
+        pageIndex < (cartItem.length / itemPerPage).ceil();
+        pageIndex++) {
       pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) {
-          final List<CartItem> currentPageItems = cartItem.skip(pageIndex * itemPerPage).take(itemPerPage).toList();
-          return pw.Container(
-            decoration: pw.BoxDecoration(
-              border: pw.Border.all(
-                color: PdfColors.black,
-                width: 1,
+        pw.Page(
+          build: (pw.Context context) {
+            final List<CartItem> currentPageItems = cartItem
+                .skip(pageIndex * itemPerPage)
+                .take(itemPerPage)
+                .toList();
+            return pw.Container(
+              decoration: pw.BoxDecoration(
+                border: pw.Border.all(
+                  color: PdfColors.black,
+                  width: 1,
+                ),
               ),
-            ),
-            padding: pw.EdgeInsets.all(10.scale),
-            child: pw.Align(
-              alignment: pw.Alignment.topRight,
-              child: pw.Column(
-                children: [
-                  pw.Row(
-                    children: [
-                      pw.Spacer(),
-                      pw.Text(
-                        Strings.skfoods.toUpperCase(),
-                        style: pw.TextStyle(
-                          fontSize: 28,
-                          fontWeight: pw.FontWeight.bold,
+              padding: pw.EdgeInsets.all(10.scale),
+              child: pw.Align(
+                alignment: pw.Alignment.topRight,
+                child: pw.Column(
+                  children: [
+                    pw.Row(
+                      children: [
+                        pw.Spacer(),
+                        pw.Text(
+                          Strings.skfoods.toUpperCase(),
+                          style: pw.TextStyle(
+                            fontSize: 28,
+                            fontWeight: pw.FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      pw.SizedBox(width: 10.scale),
-                      pw.Image(
-                        companyLogo,
-                        height: 80.scale,
-                      ),
-                    ],
-                  ),
-                  pw.SizedBox(height: 30.scale),
-                  pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.start,
-                    children: [
-                      pw.Text(
-                        '${Strings.date} ${Strings.colon} ',
-                        style: pw.TextStyle(
-                          fontWeight: pw.FontWeight.bold,
+                        pw.SizedBox(width: 10.scale),
+                        pw.Image(
+                          companyLogo,
+                          height: 80.scale,
                         ),
-                      ),
-                      pw.Text(
-                        date,
-                      ),
-                    ],
-                  ),
-                  pw.SizedBox(height: 20.scale),
-                  pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children: [
-                      pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          pw.Text(
-                            '${Strings.billTo} ${Strings.colon}',
-                            style: pw.TextStyle(
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 16.scale,
-                            ),
-                          ),
-                          pw.SizedBox(height: 5.scale),
-                          pw.Text(
-                            cname,
-                          ),
-                          pw.Text(
-                            caddr1,
-                          ),
-                          pw.Text(
-                            caddr2,
-                          ),
-                        ],
-                      ),
-                      pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          pw.Text(
-                            '${Strings.paymentInformation} ${Strings.colon}',
-                            style: pw.TextStyle(
-                              fontWeight: pw.FontWeight.bold,
-                              fontSize: 16.scale,
-                            ),
-                          ),
-                          pw.SizedBox(height: 5.scale),
-                          pw.Row(
-                            children: [
-                              pw.Text(
-                                '${Strings.bank} ${Strings.colon} ',
-                                style: pw.TextStyle(
-                                  fontWeight: pw.FontWeight.bold,
-                                ),
-                              ),
-                              pw.Text(
-                                bank,
-                              ),
-                            ],
-                          ),
-                          pw.Row(
-                            children: [
-                              pw.Text(
-                                '${Strings.name} ${Strings.colon} ',
-                                style: pw.TextStyle(
-                                  fontWeight: pw.FontWeight.bold,
-                                ),
-                              ),
-                              pw.Text(
-                                accName,
-                              ),
-                            ],
-                          ),
-                          pw.Row(
-                            children: [
-                              pw.Text(
-                                '${Strings.account} ${Strings.colon} ',
-                                style: pw.TextStyle(
-                                  fontWeight: pw.FontWeight.bold,
-                                ),
-                              ),
-                              pw.Text(
-                                accNo,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  pw.SizedBox(height: 10.scale),
-                  pw.Table(
-                    border: pw.TableBorder.all(
-                      color: PdfColors.black,
-                      width: 1,
+                      ],
                     ),
-                    children: [
-                      rowHeader(),
-                      for (int i = 0; i < currentPageItems.length; i++)
-                        rowItems(
-                          sno: pageIndex + itemPerPage + i + 1,
-                          date: cartItem[i].date ?? '',
-                          item: cartItem[i].item ?? '',
-                          qty: '${cartItem[i].qty}',
-                          rate: cartItem[i].unit!.isEmpty 
-                                ? '${cartItem[i].unitPrice}'
-                                : '${cartItem[i].unitPrice}/${cartItem[i].unit}',
-                          amount: '${cartItem[i].qty! * cartItem[i].unitPrice!}',
-                        ),
-                    ],
-                  ),
-                if (pageIndex == (cartItem.length / itemPerPage).ceil() - 1)
-                 pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.end,
-                    children: [
-                      pw.Container(
-                        alignment: pw.Alignment.bottomRight,
-                        margin:
-                            pw.EdgeInsets.only(top: 20.scale, right: 5.scale),
-                        padding: pw.EdgeInsets.all(10.scale),
-                        decoration: pw.BoxDecoration(
-                          borderRadius: pw.BorderRadius.circular(10),
-                          color: AppColors.darkBluePDF,
-                        ),
-                        child: pw.Text(
-                          '${Strings.total.toUpperCase()} ${Strings.colon} Rs.${grandTotal.value}/-',
+                    pw.SizedBox(height: 30.scale),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.start,
+                      children: [
+                        pw.Text(
+                          '${Strings.date} ${Strings.colon} ',
                           style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold,
-                            color: PdfColors.white,
                           ),
                         ),
+                        pw.Text(
+                          date,
+                        ),
+                      ],
+                    ),
+                    pw.SizedBox(height: 20.scale),
+                    pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Text(
+                              '${Strings.billTo} ${Strings.colon}',
+                              style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold,
+                                fontSize: 16.scale,
+                              ),
+                            ),
+                            pw.SizedBox(height: 5.scale),
+                            pw.Text(
+                              cname,
+                            ),
+                            pw.Text(
+                              caddr1,
+                            ),
+                            pw.Text(
+                              caddr2,
+                            ),
+                          ],
+                        ),
+                        pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Text(
+                              '${Strings.paymentInformation} ${Strings.colon}',
+                              style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold,
+                                fontSize: 16.scale,
+                              ),
+                            ),
+                            pw.SizedBox(height: 5.scale),
+                            pw.Row(
+                              children: [
+                                pw.Text(
+                                  '${Strings.bank} ${Strings.colon} ',
+                                  style: pw.TextStyle(
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
+                                ),
+                                pw.Text(
+                                  bank,
+                                ),
+                              ],
+                            ),
+                            pw.Row(
+                              children: [
+                                pw.Text(
+                                  '${Strings.name} ${Strings.colon} ',
+                                  style: pw.TextStyle(
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
+                                ),
+                                pw.Text(
+                                  accName,
+                                ),
+                              ],
+                            ),
+                            pw.Row(
+                              children: [
+                                pw.Text(
+                                  '${Strings.account} ${Strings.colon} ',
+                                  style: pw.TextStyle(
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
+                                ),
+                                pw.Text(
+                                  accNo,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    pw.SizedBox(height: 10.scale),
+                    pw.Table(
+                      border: pw.TableBorder.all(
+                        color: PdfColors.black,
+                        width: 1,
                       ),
-                    ],
-                  ),
-                ],
+                      children: [
+                        rowHeader(),
+                        for (int i = 0; i < currentPageItems.length; i++)
+                          rowItems(
+                            sno: pageIndex + i + 1,
+                            date: cartItem[i].date ?? '',
+                            item: cartItem[i].item ?? '',
+                            qty: '${cartItem[i].qty}',
+                            rate: cartItem[i].unit!.isEmpty
+                                ? '${cartItem[i].unitPrice}'
+                                : '${cartItem[i].unitPrice}/${cartItem[i].unit}',
+                            amount:
+                                '${cartItem[i].qty! * cartItem[i].unitPrice!}',
+                          ),
+                      ],
+                    ),
+                    if (pageIndex == (cartItem.length / itemPerPage).ceil() - 1)
+                      pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.end,
+                        children: [
+                          pw.Container(
+                            alignment: pw.Alignment.bottomRight,
+                            margin: pw.EdgeInsets.only(
+                                top: 20.scale, right: 5.scale),
+                            padding: pw.EdgeInsets.all(10.scale),
+                            decoration: pw.BoxDecoration(
+                              borderRadius: pw.BorderRadius.circular(10),
+                              color: AppColors.darkBluePDF,
+                            ),
+                            child: pw.Text(
+                              '${Strings.total.toUpperCase()} ${Strings.colon} Rs.${grandTotal.value}/-',
+                              style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold,
+                                color: PdfColors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
-    );
+            );
+          },
+        ),
+      );
     }
 
     final filePath = await FilePicker.platform.saveFile(
