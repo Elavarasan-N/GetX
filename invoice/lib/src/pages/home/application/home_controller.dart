@@ -16,15 +16,12 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class HomeController extends GetxController {
-  TextEditingController cname =
-      TextEditingController(text: Strings.alchemyTechsolIndiaPvtLtd);
-  TextEditingController address = TextEditingController(text: Strings.woraiyur);
-  TextEditingController pincode = TextEditingController(text: Strings.trichy);
-  TextEditingController bank =
-      TextEditingController(text: Strings.indianOverseasBank);
-  TextEditingController name = TextEditingController(text: Strings.swethas);
-  TextEditingController account =
-      TextEditingController(text: Strings.accountNo);
+  TextEditingController cname = TextEditingController();
+  TextEditingController address = TextEditingController();
+  TextEditingController pincode = TextEditingController();
+  TextEditingController bank = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController account = TextEditingController();
   TextEditingController item = TextEditingController();
   TextEditingController qty = TextEditingController();
   TextEditingController rate = TextEditingController();
@@ -134,13 +131,12 @@ class HomeController extends GetxController {
     saveAsPdf(
       context: context,
       date: selectedDate.value.isEmpty ? todayDate : selectedDate.value,
-      cname:
-          cname.text.isEmpty ? Strings.alchemyTechsolIndiaPvtLtd : cname.text,
-      caddr1: address.text.isEmpty ? Strings.woraiyur : address.text,
-      caddr2: pincode.text.isEmpty ? Strings.trichy : pincode.text,
-      bank: bank.text.isEmpty ? Strings.indianOverseasBank : bank.text,
-      accName: name.text.isEmpty ? Strings.swethas : name.text,
-      accNo: account.text.isEmpty ? Strings.accountNo : account.text,
+      cname: cname.text.isEmpty ? '' : cname.text,
+      caddr1: address.text.isEmpty ? '' : address.text,
+      caddr2: pincode.text.isEmpty ? '' : pincode.text,
+      bank: bank.text.isEmpty ? '' : bank.text,
+      accName: name.text.isEmpty ? '' : name.text,
+      accNo: account.text.isEmpty ? '' : account.text,
       cartItem: cartItem,
     );
   }
@@ -254,7 +250,7 @@ class HomeController extends GetxController {
                             pw.Row(
                               children: [
                                 pw.Text(
-                                  '${Strings.bank} ${Strings.colon} ',
+                                  '${Strings.bankName} ${Strings.colon} ',
                                   style: pw.TextStyle(
                                     fontWeight: pw.FontWeight.bold,
                                   ),
@@ -267,7 +263,7 @@ class HomeController extends GetxController {
                             pw.Row(
                               children: [
                                 pw.Text(
-                                  '${Strings.name} ${Strings.colon} ',
+                                  '${Strings.accountName} ${Strings.colon} ',
                                   style: pw.TextStyle(
                                     fontWeight: pw.FontWeight.bold,
                                   ),
@@ -280,7 +276,7 @@ class HomeController extends GetxController {
                             pw.Row(
                               children: [
                                 pw.Text(
-                                  '${Strings.account} ${Strings.colon} ',
+                                  '${Strings.accountNo} ${Strings.colon} ',
                                   style: pw.TextStyle(
                                     fontWeight: pw.FontWeight.bold,
                                   ),

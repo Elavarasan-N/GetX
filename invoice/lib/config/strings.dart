@@ -4,12 +4,6 @@ class Strings {
   static const String companyName = 'Company Name';
   static const String address = 'Address';
   static const String pincode = 'Pincode';
-  static const String alchemyTechsolIndiaPvtLtd = 'Alchemy Techsol India Pvt. Ltd.';
-  static const String woraiyur = 'Woraiyur';
-  static const String indianOverseasBank = 'Indian Overseas Bank';
-  static const String swethas = 'Swetha S';
-  static const String accountNo = '192001000010468';
-  static const String trichy = 'Trichy';
   static const String enterCompanyName = 'Enter Company Name';
   static const String enterAddress = 'Enter Address';
   static const String enterPincode = 'Enter Pincode';
@@ -24,9 +18,9 @@ class Strings {
   static const String close = 'Close';
   static const String billTo = 'Bill To';
   static const String paymentInformation = 'Payment Information';
-  static const String bank = 'Bank';
-  static const String name = 'Name';
-  static const String account = 'Account';
+  static const String bankName = 'Bank Name';
+  static const String accountName = 'Account Name';
+  static const String accountNo = 'Account No';
   static const String addItem = 'Add Item';
   static const String sno = 'S.NO';
   static const String item = 'Item';
@@ -40,6 +34,7 @@ class Strings {
   static const String actions = 'Actions';
   static const String total = 'Total';
   static const String colon = ':';
+  static const String noItems = 'No items found';
   static const String saveAsPdf = 'Save as PDF';
   static const String success = 'Success';
   static const String pdfSavedAt = 'PDF saved at';
@@ -47,6 +42,8 @@ class Strings {
   static const String pdfSavingDenied = 'PDF Saving Operation Denied';
   static const String warning = 'Warning';
   static const String itemCannotBeEmpty = 'Item cannot be empty';
-  static const String quantityMustBeGreaterThanZero = 'Quantity must be greater than zero';
-  static const String rateMustBeGreaterThanZero = 'Rate must be greater than zero';
+  static const String quantityMustBeGreaterThanZero =
+      'Quantity must be greater than zero';
+  static const String rateMustBeGreaterThanZero =
+      'Rate must be greater than zero';
 }

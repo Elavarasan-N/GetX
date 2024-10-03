@@ -32,7 +32,9 @@ class AppStyle {
     } else {
       scale = .85; // small phone
     }
-    debugPrint('screenSize=$screenSize, scale=$scale');
+    //print('width=${screenSize.width}, height=${screenSize.height}');
+    print('screenSize=$screenSize, scale=$scale');
+    //print('Scale = $scale');
 
     isSmall = display.size.shortestSide / display.devicePixelRatio < 525;
 
@@ -156,6 +158,8 @@ class _Text {
       sizePx: 14, weight: FontWeight.bold, spacingPc: 2, heightPx: 14);
   late final TextStyle btn1 = _createFont(contentFont,
       sizePx: 14, weight: FontWeight.w500, spacingPc: 2, heightPx: 14);
+  late final TextStyle btn2 = _createFont(contentFont,
+      sizePx: 10, spacingPc: 2, heightPx: 12, weight: FontWeight.w500);
   late final TextStyle receipt = _createFont(contentFont,
       sizePx: 14, weight: FontWeight.normal, spacingPc: 2, heightPx: 14);
   late final TextStyle error = _createFont(contentFont,
