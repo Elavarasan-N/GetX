@@ -13,21 +13,23 @@ class AddItem extends StatelessWidget {
   final HomeController controller;
   final bool isEdit;
   final int index;
-  const AddItem(
-      {super.key,
-      required this.controller,
-      required this.isEdit,
-      required this.index});
+  const AddItem({
+    super.key,
+    required this.controller,
+    required this.isEdit,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return customDialog(
       title: Column(
         children: [
           Padding(
             padding: EdgeInsets.only(top: 10.scale, bottom: 10.scale),
             child: Text(
-              Strings.addItem,
+              Strings.addItem.toUpperCase(),
               style: globalStyle.text.btn.copyWith(
                 fontSize: 18,
               ),
@@ -45,11 +47,19 @@ class AddItem extends StatelessWidget {
             children: [
               Text(
                 '${Strings.date} ${Strings.colon} ',
-                style: globalStyle.text.btn,
+                style: globalStyle.text.btn2.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              SizedBox(
-                height: 30.scale,
-                width: 80.scale,
+              Container(
+                constraints: BoxConstraints(maxWidth: 100.scale, maxHeight: 20.scale),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  border: Border.all(
+                    color: AppColors.grey,
+                    width: 1,
+                  ),
+                ),
                 child: InkWell(
                   onTap: () async {
                     final DateTime? selected = await showDatePicker(
@@ -76,17 +86,16 @@ class AddItem extends StatelessWidget {
                       },
                     );
                     if (selected != null) {
-                      controller.itemDate.value =
-                          DateFormat('dd-MM-yyyy').format(selected);
+                      controller.itemDate.value = DateFormat('dd-MM-yyyy').format(selected);
                     }
                   },
                   child: Center(
                     child: Obx(
                       () => Text(
                         controller.itemDate.isEmpty
-                            ? controller.itemTodayDate
-                            : controller.itemDate.value,
-                        style: globalStyle.text.btn1,
+                          ? controller.itemTodayDate
+                          : controller.itemDate.value,
+                        style: globalStyle.text.btn2,
                       ),
                     ),
                   ),
@@ -94,19 +103,29 @@ class AddItem extends StatelessWidget {
               ),
             ],
           ),
+          height2,
           Row(
             children: [
               Text(
                 '${Strings.item} ${Strings.colon} ',
-                style: globalStyle.text.btn,
+                style: globalStyle.text.btn2.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              SizedBox(
-                height: 30.scale,
-                width: 130.scale,
+              Container(
+                constraints: BoxConstraints(maxWidth: 100.scale, maxHeight: 20.scale),
+                padding: EdgeInsets.only(left: 2.scale),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  border: Border.all(
+                    color: AppColors.grey,
+                    width: 1,
+                  ),
+                ),
                 child: TextFormField(
                   controller: controller.item,
                   textAlign: TextAlign.start,
-                  style: globalStyle.text.btn1,
+                  style: globalStyle.text.btn2,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(30),
                     FilteringTextInputFormatter.allow(
@@ -116,25 +135,46 @@ class AddItem extends StatelessWidget {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: Strings.enterItemName,
-                    contentPadding: EdgeInsets.symmetric(vertical: -11.scale),
+                    contentPadding: size.height < 640 
+                      ? EdgeInsets.symmetric(vertical: 17.3.scale) 
+                      : EdgeInsets.symmetric(vertical: 10.5.scale),
                   ),
                 ),
               ),
             ],
           ),
+          height2,
           Row(
             children: [
-              Text(
-                '${Strings.qty} ${Strings.colon} ',
-                style: globalStyle.text.btn,
+              Padding(
+                padding: EdgeInsets.only(right: 7.5.scale),
+                child: Text(
+                  Strings.qty,
+                  style: globalStyle.text.btn2.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-              SizedBox(
-                height: 30.scale,
-                width: 160.scale,
+              Text(
+                '${Strings.colon} ',
+                style: globalStyle.text.btn2.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                constraints: BoxConstraints(maxWidth: 100.scale, maxHeight: 20.scale),
+                padding: EdgeInsets.only(left: 2.scale),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  border: Border.all(
+                    color: AppColors.grey,
+                    width: 1,
+                  ),
+                ),
                 child: TextFormField(
                   controller: controller.qty,
                   textAlign: TextAlign.start,
-                  style: globalStyle.text.btn1,
+                  style: globalStyle.text.btn2,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(2),
                     FilteringTextInputFormatter.digitsOnly,
@@ -142,25 +182,37 @@ class AddItem extends StatelessWidget {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: Strings.enterQty,
-                    contentPadding: EdgeInsets.symmetric(vertical: -11.scale),
+                    contentPadding: size.height < 640 
+                      ? EdgeInsets.symmetric(vertical: 17.3.scale) 
+                      : EdgeInsets.symmetric(vertical: 10.5.scale),
                   ),
                 ),
               ),
             ],
           ),
+          height2,
           Row(
             children: [
               Text(
                 '${Strings.rate} ${Strings.colon} ',
-                style: globalStyle.text.btn,
+                style: globalStyle.text.btn2.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              SizedBox(
-                height: 30.scale,
-                width: 160.scale,
+              Container(
+                constraints: BoxConstraints(maxWidth: 100.scale, maxHeight: 20.scale),
+                padding: EdgeInsets.only(left: 2.scale),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  border: Border.all(
+                    color: AppColors.grey,
+                    width: 1,
+                  ),
+                ),
                 child: TextFormField(
                   controller: controller.rate,
                   textAlign: TextAlign.start,
-                  style: globalStyle.text.btn1,
+                  style: globalStyle.text.btn2,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(4),
                     FilteringTextInputFormatter.digitsOnly,
@@ -168,50 +220,61 @@ class AddItem extends StatelessWidget {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: Strings.enterRateInRuppees,
-                    contentPadding: EdgeInsets.symmetric(vertical: -11.scale),
+                    contentPadding: size.height < 640 
+                      ? EdgeInsets.symmetric(vertical: 17.3.scale) 
+                      : EdgeInsets.symmetric(vertical: 10.5.scale),
                   ),
                 ),
               ),
             ],
           ),
+          height2,
           Row(children: [
             Text(
               '${Strings.unit} ${Strings.colon} ',
-              style: globalStyle.text.btn,
+              style: globalStyle.text.btn2.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Obx(
-              () => SizedBox(
-                height: 30.scale,
-                width: 130.scale,
+              () => Container(
+                constraints: BoxConstraints(maxWidth: 100.scale, maxHeight: 20.scale),
+                margin: EdgeInsets.only(left: 0.5.scale),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  border: Border.all(
+                    color: AppColors.grey,
+                    width: 1,
+                  ),
+                ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton(
-                    borderRadius: BorderRadius.circular(10),
-                    icon: const Icon(
+                    isExpanded: true,
+                    icon: Icon(
                       Icons.arrow_drop_down,
                       color: AppColors.black,
+                      size: 20.scale,
                     ),
                     hint: Padding(
-                      padding: EdgeInsets.only(left: 6.scale, top: 3.scale),
+                      padding: EdgeInsets.only(left: 4.scale),
                       child: Text(
                         controller.selectedUnit.value.isEmpty
                             ? controller.unit[0]
                             : controller.selectedUnit.value,
-                        style: globalStyle.text.btn1.copyWith(
+                        style: globalStyle.text.btn2.copyWith(
                           color: AppColors.black,
                         ),
                       ),
                     ),
-                    style: globalStyle.text.btn1.copyWith(
+                    style: globalStyle.text.btn2.copyWith(
                       color: AppColors.black,
                     ),
-                    items: controller.unit
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e),
-                          ),
-                        )
-                        .toList(),
+                    items: controller.unit.map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e),
+                      ),
+                    ).toList(),
                     onChanged: (val) {
                       controller.selectedUnit.value = val!;
                     },

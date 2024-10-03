@@ -21,9 +21,10 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 30.scale, right: 40.scale),
+              padding: EdgeInsets.only(top: 20.scale, right: 20.scale),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -110,56 +111,91 @@ class HomePage extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    child: billingInformationSection(),
+                    child: billingInformationSection(context),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    child: paymentInformationSection(),
+                    child: paymentInformationSection(context),
                   ),
                 ],
               ),
             ),
+            Container(
+              margin: EdgeInsets.only(left: 10.scale),
+              constraints: BoxConstraints(maxWidth: 100.scale, maxHeight: 20.scale),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: AppColors.darkBlue,
+                boxShadow: const [
+                  BoxShadow(
+                    blurRadius: 1.1,
+                    color: Colors.black45,
+                    spreadRadius: 0.5,
+                    offset: Offset(1.5, 2),
+                  ),
+                ],
+              ),
+              child: TextButton(
+                onPressed: () {
+                  Get.dialog(
+                    AddItem(
+                      controller: controller,
+                      isEdit: false,
+                      index: 0,
+                    ),
+                    barrierDismissible: false,
+                  );
+                },
+                child: Text(
+                  Strings.addItem.toUpperCase(),
+                  style: globalStyle.text.btn2.copyWith(
+                    color: AppColors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
             height10,
             Obx(() => SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width + 40,
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.scale,right: 10.scale),
+                    width: MediaQuery.of(context).size.width,
+                    child: Table(
+                      border: TableBorder.all(
+                        color: AppColors.black,
+                        width: 1.scale,
+                      ),
+                      children: [
+                        tableHeader(),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.scale,right: 10.scale),
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    child: SingleChildScrollView(
+                      controller: controller.scrollController,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
                         child: Table(
                           border: TableBorder.all(
                             color: AppColors.black,
                             width: 1.scale,
                           ),
                           children: [
-                            tableHeader(),
+                            for (int i = 0; i < controller.cartItem.length; i++)
+                              cartItemRow(index: i),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        child: SingleChildScrollView(
-                          controller: controller.scrollController,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width + 40,
-                            child: Table(
-                              border: TableBorder.all(
-                                color: AppColors.black,
-                                width: 1.scale,
-                              ),
-                              children: [
-                                for (int i = 0;
-                                    i < controller.cartItem.length;
-                                    i++)
-                                  cartItemRow(index: i),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                )),
+                    ),
+                  )
+                ],
+              ),
+            )),
             height20,
             totalAmountSection(),
             height20,
@@ -170,7 +206,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget billingInformationSection() {
+  Widget billingInformationSection(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(left: 10.scale),
       child: Column(
@@ -184,63 +220,31 @@ class HomePage extends StatelessWidget {
           customTextField(
             Strings.companyName,
             Strings.enterCompanyName,
+            context,
             controller.cname,
           ),
           height2,
           customTextField(
             Strings.address,
             Strings.enterAddress,
+            context,
             controller.address,
           ),
           height2,
           customTextField(
             Strings.pincode,
             Strings.pincode,
+            context,
             controller.pincode,
             maxLength: 10,
           ),
           height10,
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: AppColors.darkBlue,
-              boxShadow: const [
-                BoxShadow(
-                  blurRadius: 1.1,
-                  color: Colors.black45,
-                  spreadRadius: 0.5,
-                  offset: Offset(
-                    1.5,
-                    2,
-                  ),
-                ),
-              ],
-            ),
-            child: TextButton(
-              onPressed: () {
-                Get.dialog(
-                  AddItem(
-                    controller: controller,
-                    isEdit: false,
-                    index: 0,
-                  ),
-                  barrierDismissible: false,
-                );
-              },
-              child: Text(
-                Strings.addItem,
-                style: globalStyle.text.btn1.copyWith(
-                  color: AppColors.white,
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );
   }
 
-  Widget paymentInformationSection() {
+  Widget paymentInformationSection(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(right: 10.scale),
       child: Column(
@@ -254,12 +258,14 @@ class HomePage extends StatelessWidget {
           customTextField(
             Strings.bankName,
             Strings.enterBankName,
+            context,
             controller.bank,
           ),
           height2,
           customTextField(
             Strings.accountName,
             Strings.enterName,
+            context,
             controller.name,
             maxLength: 20,
           ),
@@ -267,6 +273,7 @@ class HomePage extends StatelessWidget {
           customTextField(
             Strings.accountNo,
             Strings.enterAccountNumber,
+            context,
             controller.account,
             maxLength: 15,
             isNumber: true,
@@ -279,10 +286,12 @@ class HomePage extends StatelessWidget {
   Widget customTextField(
     String label,
     String hintText,
+    BuildContext context,
     TextEditingController textController, {
     int maxLength = 30,
     bool isNumber = false,
   }) {
+    var size = MediaQuery.of(context).size;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -293,7 +302,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         Container(
-          padding: EdgeInsets.only(left: 3.scale, bottom: 3.scale),
+          padding: EdgeInsets.only(left: 3.scale),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2),
             border: Border.all(
@@ -301,8 +310,7 @@ class HomePage extends StatelessWidget {
               width: 1,
             ),
           ),
-          height: 20.scale,
-          width: 140.scale,
+          constraints: BoxConstraints(maxWidth: 180.scale, maxHeight: 20.scale),
           child: TextFormField(
             controller: textController,
             textAlign: TextAlign.start,
@@ -316,6 +324,9 @@ class HomePage extends StatelessWidget {
               border: InputBorder.none,
               hintText: hintText,
               hintStyle: globalStyle.text.btn2,
+              contentPadding: size.height < 640 
+                ? EdgeInsets.symmetric(vertical: 16.scale) 
+                : EdgeInsets.symmetric(vertical: 11.scale),
             ),
           ),
         ),
@@ -409,65 +420,88 @@ class HomePage extends StatelessWidget {
 
   Widget totalAmountSection() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          height: 30.scale,
-          width: 120.scale,
-          padding: EdgeInsets.only(left: 15.scale),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: AppColors.darkBlue,
-          ),
-          child: Row(
-            children: [
-              Text(
-                '${Strings.total} ${Strings.colon} ',
-                style: globalStyle.text.btn.copyWith(color: AppColors.white),
+        Obx(() {
+          String grandTotal = controller.grandTotal.value.toString();
+          double totalWidth = 82.scale + (grandTotal.length * 6);
+            return Container(
+              margin: EdgeInsets.only(left: 10.scale),
+              constraints: BoxConstraints(maxWidth: totalWidth, maxHeight: 25.scale),
+              padding: EdgeInsets.fromLTRB(8.scale, 5.scale, 8.scale, 5.scale),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: AppColors.darkBlue,
+                boxShadow: const [
+                  BoxShadow(
+                    blurRadius: 1.1,
+                    color: Colors.black45,
+                    spreadRadius: 0.5,
+                    offset: Offset(1.5, 2),
+                  ),
+                ],
               ),
-              Obx(
-                () => Text(
-                  'Rs. ${controller.grandTotal.value}',
-                  style: globalStyle.text.btn.copyWith(color: AppColors.white),
-                ),
+              child: Row(
+                children: [
+                  Text(
+                    '${Strings.total.toUpperCase()} ${Strings.colon} ',
+                    style: globalStyle.text.btn2.copyWith(
+                      color: AppColors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Rs. $grandTotal',
+                    style: globalStyle.text.btn2.copyWith(
+                      color: AppColors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          }
         ),
       ],
     );
   }
 
   Widget saveAsPdfButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (controller.cartItem.isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: AppColors.darkRed,
-              content: Text(
-                Strings.noItems,
-                style: globalStyle.text.btn.copyWith(color: AppColors.white),
+    return Container(
+      margin: EdgeInsets.only(left: 10.scale),
+      constraints: BoxConstraints(maxWidth: 110.scale, maxHeight: 25.scale),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: AppColors.green,
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 1.1,
+            color: Colors.black45,
+            spreadRadius: 0.5,
+            offset: Offset(1.5, 2),
+          ),
+        ],
+      ),
+      child: TextButton(
+        onPressed: () {
+          if (controller.cartItem.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: AppColors.darkRed,
+                content: Text(
+                  Strings.noItems,
+                  style: globalStyle.text.btn.copyWith(color: AppColors.white),
+                ),
               ),
-            ),
-          );
-        } else {
-          controller.save(context: context);
-        }
-      },
-      child: Container(
-        height: 30.scale,
-        width: 120.scale,
-        decoration: BoxDecoration(
-          color: AppColors.green,
-          borderRadius: BorderRadius.circular(10.scale),
-        ),
-        child: Center(
-          child: Text(
-            Strings.saveAsPdf,
-            style: globalStyle.text.btn.copyWith(
-              color: AppColors.white,
-            ),
+            );
+          } else {
+            controller.save(context: context);
+          }
+        },
+        child: Text(
+          Strings.saveAsPdf,
+          style: globalStyle.text.btn2.copyWith(
+            color: AppColors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

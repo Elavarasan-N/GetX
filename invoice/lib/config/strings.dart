@@ -12,7 +12,7 @@ class Strings {
   static const String enterAccountNumber = 'Enter Account Number';
   static const String enterItemName = 'Enter Item Name';
   static const String enterQty = 'Enter quantity';
-  static const String enterRateInRuppees = 'Enter rate in ruppees';
+  static const String enterRateInRuppees = 'Enter rate in ₹';
   static const String add = 'Add';
   static const String update = 'Update';
   static const String close = 'Close';

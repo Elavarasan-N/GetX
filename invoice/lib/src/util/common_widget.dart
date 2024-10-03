@@ -97,8 +97,9 @@ Widget buildActionButton({
   required VoidCallback onPressed,
 }) {
   return Container(
+    constraints: BoxConstraints(maxWidth: 55.scale, maxHeight: 20.scale),
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(5),
       color: color,
       boxShadow: const [
         BoxShadow(
@@ -113,7 +114,7 @@ Widget buildActionButton({
       onPressed: onPressed,
       child: Text(
         label,
-        style: globalStyle.text.btn.copyWith(color: AppColors.white),
+        style: globalStyle.text.btn2.copyWith(color: AppColors.white),
       ),
     ),
   );
