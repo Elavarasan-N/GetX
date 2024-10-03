@@ -1,16 +1,16 @@
 class Strings {
   static const String skfoods = 'SK Foods';
   static const String date = 'Date';
-  static const String companyName = 'Company Name';
+  static const String company = 'Company';
   static const String address = 'Address';
   static const String pincode = 'Pincode';
-  static const String enterCompanyName = 'Enter Company Name';
-  static const String enterAddress = 'Enter Address';
-  static const String enterPincode = 'Enter Pincode';
-  static const String enterBankName = 'Enter Bank Name';
-  static const String enterName = 'Enter Name';
-  static const String enterAccountNumber = 'Enter Account Number';
-  static const String enterItemName = 'Enter Item Name';
+  static const String enterCompanyName = 'Enter company name';
+  static const String enterCompanyAddress = 'Enter company address';
+  static const String enterPincode = 'Enter pincode';
+  static const String enterBankName = 'Enter bank name';
+  static const String enterName = 'Enter name';
+  static const String enterAccountNumber = 'Enter account number';
+  static const String enterItemName = 'Enter item name';
   static const String enterQty = 'Enter quantity';
   static const String enterRateInRuppees = 'Enter rate in ₹';
   static const String add = 'Add';

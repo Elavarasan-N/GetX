@@ -17,6 +17,7 @@ dependencies:
   get: ^4.6.6
   awesome_snackbar_content: ^0.1.4
   file_picker: ^8.0.0+1
+  web: ^1.1.0
 
 dev_dependencies:
   flutter_test:
