@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:invoice/config/app_colors.dart';
@@ -7,7 +6,7 @@ import 'package:invoice/config/app_sizes.dart';
 import 'package:invoice/config/sized_boxes.dart';
 import 'package:invoice/config/strings.dart';
 import 'package:invoice/src/pages/home/application/home_controller.dart';
-import 'package:invoice/src/util/common_widget.dart';
+import 'package:invoice/util/common_widget.dart';
 
 class AddItem extends StatelessWidget {
   final HomeController controller;
@@ -22,17 +21,14 @@ class AddItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return customDialog(
+      titlePadding: EdgeInsets.only(top: 10.scale),
       title: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: 10.scale, bottom: 10.scale),
-            child: Text(
-              Strings.addItem.toUpperCase(),
-              style: globalStyle.text.btn.copyWith(
-                fontSize: 18,
-              ),
+          Text(
+            Strings.addItem.toUpperCase(),
+            style: globalStyle.text.btn.copyWith(
+              fontSize: 18,
             ),
           ),
           Divider(
@@ -44,15 +40,19 @@ class AddItem extends StatelessWidget {
       content: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${Strings.date} ${Strings.colon} ',
+                '${Strings.date} ${Strings.colon}  ',
                 style: globalStyle.text.btn2.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Container(
-                constraints: BoxConstraints(maxWidth: 100.scale, maxHeight: 20.scale),
+                constraints: BoxConstraints(
+                  maxWidth: 120.scale,
+                  maxHeight: 25.scale,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(2),
                   border: Border.all(
@@ -86,15 +86,18 @@ class AddItem extends StatelessWidget {
                       },
                     );
                     if (selected != null) {
-                      controller.itemDate.value = DateFormat('dd-MM-yyyy').format(selected);
+                      controller.itemDate.value =
+                          DateFormat('dd-MM-yy').format(selected);
                     }
                   },
-                  child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                        5.scale, 6.scale, 60.scale, 6.scale),
                     child: Obx(
                       () => Text(
                         controller.itemDate.isEmpty
-                          ? controller.itemTodayDate
-                          : controller.itemDate.value,
+                            ? controller.itemTodayDate
+                            : controller.itemDate.value,
                         style: globalStyle.text.btn2,
                       ),
                     ),
@@ -103,192 +106,99 @@ class AddItem extends StatelessWidget {
               ),
             ],
           ),
-          height2,
+          height5,
+          popupTextField(
+            '${Strings.item} ${Strings.colon}  ',
+            Strings.itemName,
+            context,
+            controller.item,
+          ),
+          height5,
+          popupTextField(
+            '${Strings.qty}   ${Strings.colon}  ',
+            Strings.quantity,
+            context,
+            controller.qty,
+            isNumber: true,
+          ),
+          height5,
+          popupTextField(
+            '${Strings.rate} ${Strings.colon}  ',
+            Strings.rateInRuppees,
+            context,
+            controller.rate,
+            isNumber: true,
+          ),
+          height5,
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${Strings.item} ${Strings.colon} ',
+                '${Strings.unit} ${Strings.colon}  ',
                 style: globalStyle.text.btn2.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Container(
-                constraints: BoxConstraints(maxWidth: 100.scale, maxHeight: 20.scale),
-                padding: EdgeInsets.only(left: 2.scale),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
-                  border: Border.all(
-                    color: AppColors.grey,
-                    width: 1,
+              Obx(
+                () => Container(
+                  constraints: BoxConstraints(
+                    maxWidth: 120.scale,
+                    maxHeight: 25.scale,
                   ),
-                ),
-                child: TextFormField(
-                  controller: controller.item,
-                  textAlign: TextAlign.start,
-                  style: globalStyle.text.btn2,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(30),
-                    FilteringTextInputFormatter.allow(
-                      RegExp('[a-zA-Z]'),
+                  margin: EdgeInsets.only(left: 0.5.scale),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2),
+                    border: Border.all(
+                      color: AppColors.grey,
+                      width: 1,
                     ),
-                  ],
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: Strings.enterItemName,
-                    contentPadding: size.height < 640 
-                      ? EdgeInsets.symmetric(vertical: 17.3.scale) 
-                      : EdgeInsets.symmetric(vertical: 10.5.scale),
                   ),
-                ),
-              ),
-            ],
-          ),
-          height2,
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(right: 7.5.scale),
-                child: Text(
-                  Strings.qty,
-                  style: globalStyle.text.btn2.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Text(
-                '${Strings.colon} ',
-                style: globalStyle.text.btn2.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                constraints: BoxConstraints(maxWidth: 100.scale, maxHeight: 20.scale),
-                padding: EdgeInsets.only(left: 2.scale),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
-                  border: Border.all(
-                    color: AppColors.grey,
-                    width: 1,
-                  ),
-                ),
-                child: TextFormField(
-                  controller: controller.qty,
-                  textAlign: TextAlign.start,
-                  style: globalStyle.text.btn2,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(2),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: Strings.enterQty,
-                    contentPadding: size.height < 640 
-                      ? EdgeInsets.symmetric(vertical: 17.3.scale) 
-                      : EdgeInsets.symmetric(vertical: 10.5.scale),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          height2,
-          Row(
-            children: [
-              Text(
-                '${Strings.rate} ${Strings.colon} ',
-                style: globalStyle.text.btn2.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                constraints: BoxConstraints(maxWidth: 100.scale, maxHeight: 20.scale),
-                padding: EdgeInsets.only(left: 2.scale),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
-                  border: Border.all(
-                    color: AppColors.grey,
-                    width: 1,
-                  ),
-                ),
-                child: TextFormField(
-                  controller: controller.rate,
-                  textAlign: TextAlign.start,
-                  style: globalStyle.text.btn2,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(4),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: Strings.enterRateInRuppees,
-                    contentPadding: size.height < 640 
-                      ? EdgeInsets.symmetric(vertical: 17.3.scale) 
-                      : EdgeInsets.symmetric(vertical: 10.5.scale),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          height2,
-          Row(children: [
-            Text(
-              '${Strings.unit} ${Strings.colon} ',
-              style: globalStyle.text.btn2.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Obx(
-              () => Container(
-                constraints: BoxConstraints(maxWidth: 100.scale, maxHeight: 20.scale),
-                margin: EdgeInsets.only(left: 0.5.scale),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
-                  border: Border.all(
-                    color: AppColors.grey,
-                    width: 1,
-                  ),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                    isExpanded: true,
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: AppColors.black,
-                      size: 20.scale,
-                    ),
-                    hint: Padding(
-                      padding: EdgeInsets.only(left: 4.scale),
-                      child: Text(
-                        controller.selectedUnit.value.isEmpty
-                            ? controller.unit[0]
-                            : controller.selectedUnit.value,
-                        style: globalStyle.text.btn2.copyWith(
-                          color: AppColors.black,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      isExpanded: true,
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: AppColors.black,
+                        size: 20.scale,
+                      ),
+                      hint: Padding(
+                        padding: EdgeInsets.only(left: 4.scale),
+                        child: Text(
+                          controller.selectedUnit.value.isEmpty
+                              ? controller.unit[0]
+                              : controller.selectedUnit.value,
+                          style: globalStyle.text.btn2.copyWith(
+                            color: AppColors.black,
+                          ),
                         ),
                       ),
-                    ),
-                    style: globalStyle.text.btn2.copyWith(
-                      color: AppColors.black,
-                    ),
-                    items: controller.unit.map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(e),
+                      style: globalStyle.text.btn2.copyWith(
+                        color: AppColors.black,
                       ),
-                    ).toList(),
-                    onChanged: (val) {
-                      controller.selectedUnit.value = val!;
-                    },
+                      items: controller.unit
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (val) {
+                        controller.selectedUnit.value = val!;
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-          ]),
-          height10,
+            ],
+          ),
+          height15,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildActionButton(
                 label: isEdit ? Strings.update : Strings.add,
+                context,
                 color: AppColors.darkBlue,
                 onPressed: () {
                   if (validateInputs()) {
@@ -316,6 +226,7 @@ class AddItem extends StatelessWidget {
               ),
               buildActionButton(
                 label: Strings.close,
+                context,
                 color: AppColors.red,
                 onPressed: () {
                   controller.clearText();

@@ -11,7 +11,7 @@ import 'package:invoice/config/app_sizes.dart';
 import 'package:invoice/config/asset_contants.dart';
 import 'package:invoice/config/strings.dart';
 import 'package:invoice/src/pages/home/ui/popup/add_item.dart';
-import 'package:invoice/src/util/common_widget.dart';
+import 'package:invoice/util/common_widget.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -30,7 +30,7 @@ class HomeController extends GetxController {
   RxString selectedDate = ''.obs;
   String todayDate = DateFormat('MMMM dd, yyyy').format(DateTime.now());
   RxString itemDate = ''.obs;
-  String itemTodayDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
+  String itemTodayDate = DateFormat('dd-MM-yy').format(DateTime.now());
   RxString selectedUnit = ''.obs;
   List<String> unit = [Strings.selectUnit, 'Kg', 'Piece', 'Cup'];
   var cartItem = <CartItem>[].obs;

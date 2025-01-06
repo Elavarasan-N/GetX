@@ -160,6 +160,8 @@ class _Text {
       sizePx: 14, weight: FontWeight.w500, spacingPc: 2, heightPx: 14);
   late final TextStyle btn2 = _createFont(contentFont,
       sizePx: 10, spacingPc: 2, heightPx: 12, weight: FontWeight.w500);
+  late final TextStyle btn3 = _createFont(contentFont,
+      sizePx: 6, spacingPc: 2, heightPx: 8, weight: FontWeight.w500);
   late final TextStyle receipt = _createFont(contentFont,
       sizePx: 14, weight: FontWeight.normal, spacingPc: 2, heightPx: 14);
   late final TextStyle error = _createFont(contentFont,
